@@ -1,0 +1,35 @@
+name: Build
+
+on:
+    push:
+      tags:
+        - "v*"
+
+
+jobs:
+  build:
+    name: Build and release React Recipe
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          registry-url: 'https://registry.npmjs.org'
+      - uses: DeterminateSystems/nix-installer-action@main
+        with:
+          extra-conf: |
+            substituters = root ${{ github.actor }} https://cache.nixos.org
+            sandbox = relaxed
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - run: |
+          nix build --option sandbox relaxed .#recipe-parser-wasm --json --out-link result
+      - run: |
+          mkdir dist
+          cp -r result/* dist
+      - run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
