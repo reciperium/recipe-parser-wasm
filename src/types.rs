@@ -9,7 +9,9 @@ use tsify::Tsify;
 #[tsify(into_wasm_abi)]
 pub struct Ingredient {
     pub name: String,
+    #[tsify(optional)]
     pub quantity: Option<String>,
+    #[tsify(optional)]
     pub unit: Option<String>,
 }
 
@@ -28,13 +30,16 @@ pub struct Material {
 #[derive(Debug, Clone, Eq, PartialEq, Serialize, Tsify)]
 #[tsify(into_wasm_abi)]
 pub struct Recipe<'a> {
+    #[tsify(optional)]
     pub name: Option<String>,
     #[tsify(type = "Map<string, string>")]
+    #[tsify(optional)]
     pub metadata: HashMap<String, String>,
     pub ingredients: Vec<Ingredient>,
     pub recipes_refs: Vec<Ingredient>,
     pub timers: Vec<Timer>,
     pub materials: Vec<Material>,
+    #[tsify(optional)]
     pub backstory: Option<String>,
     pub instructions: String,
     pub tokens: Vec<Token<'a>>,

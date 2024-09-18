@@ -3,5 +3,5 @@ build:
     npm --prefix out pkg set type='module'
     npm --prefix out pkg set main='recipe-parser.js'
 
-nix_build:
+build-nix:
     nix build .#recipe-parser-wasm --json

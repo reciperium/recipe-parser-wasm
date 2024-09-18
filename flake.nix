@@ -12,30 +12,51 @@
 
   };
 
-  outputs = inputs@{ flake-parts, nixpkgs, gitignore, ... }:
+  outputs =
+    inputs@{
+      flake-parts,
+      nixpkgs,
+      gitignore,
+      ...
+    }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       debug = true;
       imports = [
         inputs.devenv.flakeModule
       ];
 
-      systems = [ "x86_64-linux" "aarch64-darwin" "x86_64-darwin" ];
-      perSystem = { config, self', inputs', pkgs, system, ... }:
+      systems = [
+        "x86_64-linux"
+        "aarch64-darwin"
+        "x86_64-darwin"
+      ];
+      perSystem =
+        {
+          config,
+          self',
+          inputs',
+          pkgs,
+          system,
+          ...
+        }:
         {
           packages.recipe-parser-wasm = pkgs.stdenv.mkDerivation {
             name = "recipe-parser-wasm";
             src = gitignore.lib.gitignoreSource ./.;
-            nativeBuildInputs = with pkgs; [
-              just
-              wasm-pack
-              nodejs_20
-              rustup
-            ] ++ lib.optionals stdenv.isDarwin [
-              libiconv
-              darwin.apple_sdk_11_0.frameworks.Cocoa
-              darwin.apple_sdk_11_0.frameworks.CoreServices
-              darwin.apple_sdk_11_0.frameworks.Security
-            ];
+            nativeBuildInputs =
+              with pkgs;
+              [
+                just
+                wasm-pack
+                nodejs_20
+                rustup
+              ]
+              ++ lib.optionals stdenv.isDarwin [
+                libiconv
+                darwin.apple_sdk_11_0.frameworks.Cocoa
+                darwin.apple_sdk_11_0.frameworks.CoreServices
+                darwin.apple_sdk_11_0.frameworks.Security
+              ];
 
             # Normally required by autotools, but in this case we configure env variables for the
             # upcoming build phase.
@@ -53,25 +74,26 @@
               mv out $out
             '';
           };
-
-          devenv.shells.default = {
+          devShells.default = pkgs.mkShell {
             name = "recipe-parser-wasm";
-
-            packages = with pkgs; [
-              just
-              wasm-pack
-              nodejs_20
-            ] ++ lib.optionals stdenv.isDarwin [
-              libiconv
-              darwin.apple_sdk_11_0.frameworks.Cocoa
-              darwin.apple_sdk_11_0.frameworks.CoreServices
-              darwin.apple_sdk_11_0.frameworks.Security
-            ];
-
-            enterShell = ''
+            buildInputs =
+              with pkgs;
+              [
+                just
+                wasm-pack
+                nodejs_20
+              ]
+              ++ lib.optionals stdenv.isDarwin [
+                libiconv
+                darwin.apple_sdk_11_0.frameworks.Cocoa
+                darwin.apple_sdk_11_0.frameworks.CoreServices
+                darwin.apple_sdk_11_0.frameworks.Security
+              ];
+            shellHook = ''
               just --list
             '';
           };
+
         };
     };
 }
