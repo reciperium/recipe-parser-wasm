@@ -15,10 +15,17 @@ jobs:
       id-token: write
     steps:
       - uses: actions/checkout@v4
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
       - uses: actions/setup-node@v4
         with:
           node-version: '20.x'
           registry-url: 'https://registry.npmjs.org'
+      - name: Update Cargo.lock
+        uses: actions-rs/cargo@v1
+        with:
+          command: generate-lockfile
       - uses: DeterminateSystems/nix-installer-action@main
         with:
           extra-conf: |
