@@ -1,3 +1,9 @@
+## v0.1.4 (2024-09-18)
+
+### Fix
+
+- update package.json values on build
+
 ## v0.1.3 (2024-09-18)
 
 ### Fix
