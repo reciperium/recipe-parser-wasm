@@ -26,7 +26,7 @@ jobs:
             sandbox = relaxed
       - uses: DeterminateSystems/magic-nix-cache-action@main
       - run: |
-          nix build --option sandbox relaxed .#recipe-parser-wasm --json --out-link result
+          nix build --fallback --system x86_64-linux --option sandbox relaxed .#recipe-parser-wasm --json --out-link result
       - run: |
           mkdir dist
           cp -r result/* dist
