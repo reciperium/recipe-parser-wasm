@@ -68,6 +68,7 @@
             # Compiling phase
             buildPhase = ''
               rustup default stable
+              cargo generate-lockfile
               just build
             '';
             installPhase = ''
