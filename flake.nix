@@ -49,6 +49,7 @@
               wasm-bindgen-cli
               nodejs_20
               llvmPackages.bintools
+              binaryen
             ];
 
 
@@ -74,7 +75,6 @@
                 just
                 wasm-pack
                 nodejs_20
-                binaryen
               ]
               ++ lib.optionals stdenv.isDarwin [
                 libiconv
