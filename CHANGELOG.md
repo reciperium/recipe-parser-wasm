@@ -1,3 +1,9 @@
+## v0.1.9 (2024-10-12)
+
+### Fix
+
+- add wasm missing dep for build
+
 ## v0.1.8 (2024-10-12)
 
 ### Fix
