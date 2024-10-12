@@ -4,9 +4,6 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
-    devenv.url = "github:cachix/devenv";
-    devenv.inputs.nixpkgs.follows = "nixpkgs";
-
     gitignore.url = "github:hercules-ci/gitignore.nix";
     gitignore.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -21,9 +18,6 @@
     }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       debug = true;
-      imports = [
-        inputs.devenv.flakeModule
-      ];
 
       systems = [
         "x86_64-linux"
