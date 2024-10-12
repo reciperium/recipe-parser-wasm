@@ -74,6 +74,7 @@
                 just
                 wasm-pack
                 nodejs_20
+                binaryen
               ]
               ++ lib.optionals stdenv.isDarwin [
                 libiconv
