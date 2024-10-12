@@ -34,41 +34,38 @@
           ...
         }:
         {
-          packages.recipe-parser-wasm = pkgs.stdenv.mkDerivation {
+          packages.recipe-parser-wasm = pkgs.rustPlatform.buildRustPackage {
             name = "recipe-parser-wasm";
             src = gitignore.lib.gitignoreSource ./.;
-            nativeBuildInputs =
-              with pkgs;
-              [
-                just
-                wasm-pack
-                nodejs_20
-                rustup
-              ]
-              ++ lib.optionals stdenv.isDarwin [
-                libiconv
-                darwin.apple_sdk_11_0.frameworks.Cocoa
-                darwin.apple_sdk_11_0.frameworks.CoreServices
-                darwin.apple_sdk_11_0.frameworks.Security
-              ];
+            cargoLock = {
+              lockFile = ./Cargo.lock;
+            };
+            doCheck = false;
 
-            # Normally required by autotools, but in this case we configure env variables for the
-            # upcoming build phase.
+            # used at build time
+            nativeBuildInputs = with pkgs; [
+              just
+              wasm-pack
+              wasm-bindgen-cli
+              nodejs_20
+              llvmPackages.bintools
+            ];
+
+
             configurePhase = ''
               # NPM writes cache directories etc to $HOME.
               export HOME=$TMP
             '';
 
-            # Compiling phase
             buildPhase = ''
-              rustup default stable
-              cargo generate-lockfile
               just build
             '';
+
             installPhase = ''
               mv out $out
             '';
           };
+
           devShells.default = pkgs.mkShell {
             name = "recipe-parser-wasm";
             buildInputs =
