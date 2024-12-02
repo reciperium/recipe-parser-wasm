@@ -109,9 +109,9 @@ dependencies = [
 
 [[package]]
 name = "recipe-parser"
-version = "0.8.4"
+version = "0.8.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2026c8e0748f4b23c0d27ce39fef0eb26f3bc879b7041296c245425919d32b66"
+checksum = "4fa8a46d70baee8031753bde3768c9b31f0797b0333c599cdccdd08a70e3babf"
 dependencies = [
  "serde",
  "tsify",
