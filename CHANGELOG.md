@@ -1,3 +1,9 @@
+## v0.1.18 (2026-02-15)
+
+### Fix
+
+- **ci**: add update npm to latest version
+
 ## v0.1.17 (2026-02-15)
 
 ### Fix
