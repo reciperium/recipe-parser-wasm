@@ -1,9 +1,13 @@
-name: Build
+name: Test
 
 on:
-  push:
-    tags:
-      - "v*"
+  pull_request:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -11,7 +15,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      id-token: write
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
@@ -24,11 +27,5 @@ jobs:
             substituters = root ${{ github.actor }} https://cache.nixos.org
             sandbox = relaxed
       - uses: DeterminateSystems/magic-nix-cache-action@main
-      - run: |
-          nix build --fallback --option sandbox relaxed .#recipe-parser-wasm --json --out-link result
-      - run: |
-          mkdir dist
-          cp -r result/* dist
-      - run: cd dist && npm publish --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Run tests
+        run: nix develop --command bash -c "just test"
