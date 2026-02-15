@@ -1,3 +1,9 @@
+## v0.1.15 (2026-02-15)
+
+### Fix
+
+- **ci**: add provenance to npm publish
+
 ## v0.1.14 (2026-02-15)
 
 ### Fix
