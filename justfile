@@ -5,3 +5,6 @@ build:
 
 build-nix:
     nix build .#recipe-parser-wasm --json
+
+test:
+    wasm-pack test --node
