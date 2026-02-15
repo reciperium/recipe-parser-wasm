@@ -33,3 +33,5 @@ jobs:
           mkdir dist
           cp -r result/* dist
       - run: cd dist && npm publish --provenance --verbose
+        env:
+          NPM_CONFIG_PROVENANCE: true
