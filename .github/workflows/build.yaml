@@ -20,8 +20,7 @@ jobs:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
-          node-version: "24.x"
-          registry-url: "https://registry.npmjs.org"
+          node-version: "lts/*"
       - uses: DeterminateSystems/nix-installer-action@main
         with:
           extra-conf: |
@@ -33,4 +32,4 @@ jobs:
       - run: |
           mkdir dist
           cp -r result/* dist
-      - run: cd dist && npm publish --provenance --access public
+      - run: cd dist && npm publish --verbose
