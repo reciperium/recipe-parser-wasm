@@ -6,7 +6,10 @@
 
     gitignore.url = "github:hercules-ci/gitignore.nix";
     gitignore.inputs.nixpkgs.follows = "nixpkgs";
-
+    fenix = {
+      url = "github:nix-community/fenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -26,13 +29,26 @@
       ];
       perSystem =
         {
-          config,
-          self',
-          inputs',
           pkgs,
-          system,
+          inputs',
           ...
         }:
+        let
+          nodejs = pkgs.nodejs_24;
+          fenix = inputs'.fenix.packages;
+          rustChannel = "stable";
+          rustToolchain = (
+            fenix.combine [
+              fenix.${rustChannel}.toolchain
+
+              # https://doc.rust-lang.org/rustc/platform-support.html
+              # For more targets add:
+              # fenix.targets.aarch64-linux-android."${rustChannel}".rust-std
+              # fenix.targets.x86_64-linux-android."${rustChannel}".rust-std
+            ]
+          );
+
+        in
         {
           packages.recipe-parser-wasm = pkgs.rustPlatform.buildRustPackage {
             name = "recipe-parser-wasm";
@@ -47,11 +63,10 @@
               just
               wasm-pack
               wasm-bindgen-cli
-              nodejs_20
+              nodejs
               llvmPackages.bintools
               binaryen
             ];
-
 
             configurePhase = ''
               # NPM writes cache directories etc to $HOME.
@@ -69,12 +84,13 @@
 
           devShells.default = pkgs.mkShell {
             name = "recipe-parser-wasm";
-            buildInputs =
+            packages =
               with pkgs;
               [
                 just
                 wasm-pack
-                nodejs_20
+                nodejs
+                rustToolchain
               ]
               ++ lib.optionals stdenv.isDarwin [
                 libiconv
