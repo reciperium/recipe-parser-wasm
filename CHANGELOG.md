@@ -1,3 +1,9 @@
+## v0.1.14 (2026-02-15)
+
+### Fix
+
+- **ci**: attempt at publishing again
+
 ## v0.1.13 (2026-02-15)
 
 ### Fix
