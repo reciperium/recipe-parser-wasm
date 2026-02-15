@@ -5,10 +5,6 @@ on:
     tags:
       - "v*"
 
-permissions:
-  id-token: write # Required for OIDC
-  contents: read
-
 jobs:
   build:
     name: Build and release React Recipe
@@ -21,6 +17,7 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: "lts/*"
+          registry-url: "https://registry.npmjs.org"
       - uses: DeterminateSystems/nix-installer-action@main
         with:
           extra-conf: |
@@ -32,6 +29,4 @@ jobs:
       - run: |
           mkdir dist
           cp -r result/* dist
-      - run: cd dist && npm publish --provenance --verbose
-        env:
-          NPM_CONFIG_PROVENANCE: true
+      - run: cd dist && npm publish --access public --provenance --verbose
