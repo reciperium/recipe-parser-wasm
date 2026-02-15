@@ -1,3 +1,13 @@
+## v0.1.12 (2026-02-15)
+
+### Fix
+
+- add tests
+- minor js config
+- **cargo**: bump dependencies
+- **flake**: add wasm target
+- **flake**: update shell
+
 ## v0.1.11 (2024-10-12)
 
 ### Fix
