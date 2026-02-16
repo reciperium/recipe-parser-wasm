@@ -1,3 +1,9 @@
+## v0.1.20 (2026-02-16)
+
+### Fix
+
+- **ci**: try to use latest node version
+
 ## v0.1.19 (2026-02-16)
 
 ### Fix
