@@ -14,17 +14,7 @@ jobs:
       id-token: write
     steps:
       - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
-        with:
-          node-version: "24"
-          registry-url: "https://registry.npmjs.org"
-          check-latest: true
-      - run: npm install -g npm@latest
       - uses: DeterminateSystems/nix-installer-action@main
-        with:
-          extra-conf: |
-            substituters = root ${{ github.actor }} https://cache.nixos.org
-            sandbox = relaxed
       - uses: DeterminateSystems/magic-nix-cache-action@main
       - run: |
           nix build --fallback --option sandbox relaxed .#recipe-parser-wasm --json --out-link result
