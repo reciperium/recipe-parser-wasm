@@ -1,3 +1,9 @@
+## v0.1.19 (2026-02-16)
+
+### Fix
+
+- **ci**: use npm from the root folder
+
 ## v0.1.18 (2026-02-15)
 
 ### Fix
